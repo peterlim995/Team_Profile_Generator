@@ -8,17 +8,21 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
 const fs = require('fs');
-const template = require('./src/page-template');
+const path = require('path');
+
 
 
 // 2.
 // import page-template.js from subfoler src with require and assign it to a variable to be called later to render html
+const template = require('./src/page-template');
+
 
 // 3.
 // create variable to hold the path to dist subfolder using path lib resolve method
 // create variable to hold the path to team.html using path lib join method
-const subfolder = './dist/team.html';
-// const template = gererateHtml();
+const subfolder = path.resolve(__dirname,'dist');
+const teamfile = path.join(subfolder,'team.html');
+
 
 
 
@@ -259,27 +263,11 @@ function addIntern() {
 
 
 function buildTeam() {
-    let html =`<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Team Profile Generator</title>
-        <link rel="stylesheet" href="./style.css">
-    </head>
-    <body>
-        <nav>
-            <h1> My Team </h1>
-        </nav>
-        <main id="team">
-    
-    
-        </main>
-    </body>
-    </html>`;
 
-    fs.writeFile(subfolder, html, (err) =>
+    
+    const html = template(employee);
+
+    fs.writeFile(teamfile, html, (err) =>
         err ? console.log(err) : console.log('team.html is made!')
     );   
 
