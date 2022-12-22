@@ -1,22 +1,25 @@
 // Import Engineer class with require()
+const Engineer = require('../lib/Engineer');
 
 // Test setting github account
-test("", () => {
-  // Assign github account to a new variable
-  // Instantiate the Employee class, passing an name and an id and an email and the github variable as auguments, to create an object and assign it to an new variable
-  // Export the github of the employee object to be equal to the value of the github variable
+test("Engineer github should be the same as the passing variable", () => {
+  
+  const github = "peterlim";
+  const engineer = new Engineer('name', 123,'peter@ggg.com',github);
+  expect(engineer.github).toEqual(github);
 });
 
 // Test get role method
-test("", () => {
-  // Assign "Engineer" to a new role variable
-  // Instantiate the Employee class, passing an employee name and an id and an email and a github account name as auguments, to create an object and assign it to an new variable
-  // Export getRole() to return the role to be equal to the value of the role variable
+test("getRole() should be the same as the value of the role variable", () => {
+  
+  const engineer = new Engineer('name', 123,'peter@ggg.com',"github");
+  expect(engineer.getRole()).toEqual('Engineer');
 });
 
 // Test get github method
-test("", () => {
-  // Assign github account to a new variable
-  // Instantiate the Employee class, passing an employee name and an id and an email and the github variable as auguments, to create an object and assign it to an new variable
-  // Expect getGithub() to return the github  name to be equal to the value of the github variable
+test("getGithub() should be the same as the passing variable", () => {
+  
+  const github = "peterlim";
+  const engineer = new Engineer('name', 123,'peter@ggg.com',github);
+  expect(engineer.getGithub()).toEqual(github);
 });

@@ -89,8 +89,7 @@ const create_team_function = team => {
 // export function to generate entire page with team array passed in as input parameter from index.js
 // - return template literal for entire html replacing team member html with returned value from create-team-function via template literal varaible expression
 module.exports = team => {
-
-    console.log('Team: ',team);
+ 
 
     return `
     <!DOCTYPE html>
