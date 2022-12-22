@@ -1,4 +1,8 @@
+module.exports = () => {
+ 
 
+    return `
+    /*  Styling for team html */
 
 * {
     box-sizing: border-box;
@@ -76,3 +80,6 @@ main {
     border: 1px solid gray;
     font-size: 12px;
 }
+
+    `;
+};

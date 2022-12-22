@@ -1,38 +1,27 @@
-// 1.
-// import manager, engineer, intern files with require()
-// import inquirer with require()
-// import path with require()
-// import fs with require()
+
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
-
-
-
-// 2.
-// import page-template.js from subfoler src with require and assign it to a variable to be called later to render html
 const template = require('./src/page-template');
+const cssTemplate = require('./src/css-template');
 
-
-// 3.
-// create variable to hold the path to dist subfolder using path lib resolve method
+// hold the path to dist subfolder 
 // create variable to hold the path to team.html using path lib join method
-const subfolder = path.resolve(__dirname,'dist');
-const teamfile = path.join(subfolder,'team.html');
+const subfolder = path.resolve(__dirname, 'dist');
+const teamfile = path.join(subfolder, 'team.html');
+const cssfile = path.join(subfolder, 'style.css');
 
 
 
-
-
-// 4.
-// create an empty employee memeber array variable to store the employee members, manager, engineers, and interns
-// create an empty employee id array to store the employee ids
+// store the employee members, manager, engineers, and interns
 const employee = [];
+
+// create an empty employee id array to store the employee ids
 const employeeId = [];
-// 5.
+
 // print user of usage
 console.log(`
 Welcome to the team generator!
@@ -40,21 +29,19 @@ Use 'npm run reset' to reset the dist/ folder
 
 Please bulid your team 👍👍`);
 
-// 6.
-// make call to create manager function to start the main process
+// start the main process
 
 managerInput();
 
 
-// 7.
-// create manager function
-// - ask the questions for name, id, email, office number for manager using inquirer
-// - in the .then callback function, create manager object by instantiating Manager class instance, passing in name, id, office number as arguments to constructor
-// - push the manager object to the employee member array
-// - push the manager id to the employee id array
-// - make call to the create team function
+
+// create manager object and push the object to the employee member array
+// push the manager id to the employee id array
+// make call to the create team function
 
 function managerInput() {
+
+    // ask the questions for name, id, email, office number for manager using inquirer
     inquirer
         .prompt([
             {
@@ -90,28 +77,23 @@ function managerInput() {
         ])
         .then(answer => {
             const { name, id, email, office } = answer;
+            //create manager object
             const manager = new Manager(name, id, email, office);
 
             employee.push(manager);
             employeeId.push(id);
-            // console.log(employee);
-            // console.log(employeeId);
             team();
-
         })
 }
 
 
 
-// 8.
-// create team function
-// - prompt user with the list of choices for Engineer, Intern, or End of adding employee for the team
-// - in .then callback function check what the user choice is and make call to the corresponding functions respectively
-// - make call to add-engineer-function if the choice is engineer
-// - make call to add-intern-function if choice is intern
-// - make call to build-team function if choice is end of adding employee
+// check what the user choice is and make call to the corresponding functions respectively
+// addEngineer function or addIntern function or buildTeam function 
 
 function team() {
+
+    // prompt user with the list of choices for Engineer, Intern, or End of adding employee for the team
     inquirer
         .prompt([
             {
@@ -135,15 +117,13 @@ function team() {
 }
 
 
-// 8.
-// add engineer function
-// - prompt user with questions for engineer name, id, email, and github name
-// - in .then callback create engineer object by instantiating Engineer class instance passing name, id, email, and github as arguments to class constructor
-// - push engineer object to employee member array
-// - push engineer id to employee id array
-// - make call to create team function
+// create Engineer object and push the object to the employee member array
+// push the Engineer id to the employee id array
+// make call to the create team function
 
 function addEngineer() {
+
+    // - prompt user with questions for engineer name, id, email, and github name
     inquirer
         .prompt([
             {
@@ -185,23 +165,20 @@ function addEngineer() {
 
             employee.push(engineer);
             employeeId.push(id);
-            // console.log(employee);
-            // console.log(employeeId);
             team();
 
         })
 }
 
 
-// 9.
-// add intern function
-// - prompt user with questions for intern name, id, email, and school
-// - in .then callback create intern object by instantiating Intern class instance passing name, id, email, and school as arguments to class constructor
-// - push intern object to employee member array
-// - push intern id to employee id array
-// - make call to create team function
+
+// create Intern object and push the object to the employee member array
+// push the Intern id to the employee id array
+// make call to the create team function
 
 function addIntern() {
+
+    // - prompt user with questions for intern name, id, email, and school
     inquirer
         .prompt([
             {
@@ -243,8 +220,6 @@ function addIntern() {
 
             employee.push(intern);
             employeeId.push(id);
-            // console.log(employee);
-            // console.log(employeeId);
             team();
 
         })
@@ -253,23 +228,43 @@ function addIntern() {
 
 // 10.
 // build team function
-// - check existing of dist subfolder
-// - if not exist, create the dist subfolder
+
+
+
 // - make call to imported render function passing employee member array as argument and assign returned html to a variable
 // - make call to fs write file function passing the html file path, html variable
-
-
-
-
-
 function buildTeam() {
 
-    
     const html = template(employee);
+    const css = cssTemplate();
 
-    fs.writeFile(teamfile, html, (err) =>
-        err ? console.log(err) : console.log('team.html is made!')
-    );   
+    // check existing of dist subfolder
+    // if not exist, create the dist subfolder
+    // making team.html and style.css files
+    fs.access(subfolder, err => {
+        if (err) {
+            const fsPromises = fs.promises;
 
+            fsPromises.mkdir(subfolder)
+                .then(() => {
+                    fs.writeFile(teamfile, html, (err) =>
+                        err ? console.log(err) : console.log('team.html is made!')
+                    );
+                    fs.writeFile(cssfile, css, (err) =>
+                        err ? console.log(err) : console.log('style.css is made!')
+                    );
+
+                })
+        }
+        //
+        else {
+            fs.writeFile(teamfile, html, (err) =>
+                err ? console.log(err) : console.log('team.html is made!')
+            );
+            fs.writeFile(cssfile, css, (err) =>
+                err ? console.log(err) : console.log('style.css is made!')
+            );
+        }
+    })
 }
 
